@@ -1,0 +1,1 @@
+wrote /tmp/erosyn-checks/modeled.wav: 64 frames, formants modeled at root 36.71 Hz (D1 +0c)

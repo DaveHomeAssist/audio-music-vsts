@@ -1,0 +1,1 @@
+wrote /tmp/erosyn-checks/extracted.wav: 16 frames (1 per cycle @ 37.28 Hz, harmonics 1-429)

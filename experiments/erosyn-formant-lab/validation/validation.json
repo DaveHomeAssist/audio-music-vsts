@@ -1,0 +1,55 @@
+{
+  "commands_passed": [
+    "analyze",
+    "extract",
+    "formant",
+    "compare",
+    "preview_render (defaults)"
+  ],
+  "wav_checks": {
+    "REF_extract_D1_learning-only.wav": {
+      "sample_rate": 44100,
+      "samples": 32768,
+      "peak": 0.949999988079071,
+      "frames": 16
+    },
+    "ORIG_formant_growl_D1.wav": {
+      "sample_rate": 44100,
+      "samples": 131072,
+      "peak": 0.949999988079071,
+      "frames": 64
+    },
+    "v3_full_chain.wav": {
+      "sample_rate": 44100,
+      "samples": 19404,
+      "peak": 0.8899999856948853
+    },
+    "v2_unison_drive.wav": {
+      "sample_rate": 44100,
+      "samples": 19404,
+      "peak": 0.8899999856948853
+    },
+    "v1_dry.wav": {
+      "sample_rate": 44100,
+      "samples": 19404,
+      "peak": 0.8899999856948853
+    },
+    "preview.wav": {
+      "sample_rate": 44100,
+      "samples": 19404,
+      "peak": 0.8899999856948853
+    }
+  },
+  "regenerated_table_matches": {
+    "REF_extract_D1_learning-only.wav": {
+      "same_shape": true,
+      "max_abs_difference": 0.0,
+      "byte_identical": true
+    },
+    "ORIG_formant_growl_D1.wav": {
+      "same_shape": true,
+      "max_abs_difference": 0.0,
+      "byte_identical": true
+    }
+  }
+}

@@ -1,0 +1,2 @@
+-r ../serum-bass-lab/requirements.txt
+soundfile==0.13.1

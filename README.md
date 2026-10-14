@@ -2,6 +2,10 @@
 
 Practical audio-analysis and synthesis experiments, with reproducible tools and listening materials.
 
+## Erosyn formant lab
+
+[Open the consolidated formant toolkit](experiments/erosyn-formant-lab/README.md) for the designed 64-frame vowel table, 16-frame pitch-synchronous extraction, offline effects previews, and analysis/comparison CLI supplied in the alternate archive. It complements the eight-frame experiment below. The guide explains why the two pitch estimates and repetition metrics differ, corrects the “81% noise” interpretation, and links validation results and source hashes.
+
 ## Serum bass wavetable lab
 
 [Open the workflow and Serum instructions](experiments/serum-bass-lab/README.md).

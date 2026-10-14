@@ -1,0 +1,21 @@
+{
+  "source_archive": "erosyn-bass-lab-kit-alt1.zip",
+  "archive_sha256": "f083df8ab1c39986902f19bd3de1a330a3e7bde9e17b261e89e9b642c95083fc",
+  "original_file_sha256": {
+    "README.md": "2643418f14eb740d7265997206b5409cfdce5ff5729b5f1dcd0c0102554d2e5e",
+    "analysis/compare_ltas.png": "ced238ae8bbcbb20cea56bc8eac4e90d569fd69cd0ec85bdec3c6e22a9635ff0",
+    "analysis/compare_v3_vs_reference.txt": "24d5956ccb3ad4143f5ff05a26adb242c14b460820f63f5aba4a540f7995531d",
+    "analysis/harmonics.csv": "817eba569c1b5ef17915dbc7f94bb7ae61fbbec0e2e1f5de8efb6dc5f95f82c4",
+    "analysis/reference_report.txt": "b21687865c3687111b773e507a6b3d265a111afb5aa24942fbe974c09e563922",
+    "analysis/spectrogram.png": "c6657a7a2a45a8bc9f8dd8a60000f96c37efb8a2858aef00862d6963e28ec356",
+    "analysis/wavetable_overview.png": "bc23b0dde6d57a7abf9eb3bd38364fc6fecf7c549554999f1ab80d29fc767fbd",
+    "renders/v1_dry.wav": "a90ce5aba5f20429e73ff37d272d8807c814b8e3a2a0d66868ddcbcb046801b8",
+    "renders/v2_unison_drive.wav": "667438fce35cd3a0076c555ccea76f2906a59748b80b74978f4629e45d251dfc",
+    "renders/v3_full_chain.wav": "1fe7bd8886b569523838d600db37d30a6692801b3b0547a3a04112224c23fc41",
+    "tools/preview_render.py": "4575701477139a9f0ce32a8748190afd1bd4d15add124cb1498094f909e4b49c",
+    "tools/wt_lab.py": "7d71759be145d5286b3058d7bfe8f6b191f24b93ac7edcda7d42f8b9a2eab81d",
+    "wavetables/ORIG_formant_growl_D1.wav": "af80b124e6bb18183ff38f6db451decb943edb5457bc03d2a5b3ad4085fff0aa",
+    "wavetables/REF_extract_D1_learning-only.wav": "cad0a4e44d22853f8c63d142db242f4ad09ab73aeca5bd65498df9a4dfac4702"
+  },
+  "duplicate_archive": "erosyn-bass-lab-kit.zip: all 13 payload files match experiments/serum-bass-lab; not imported twice"
+}
