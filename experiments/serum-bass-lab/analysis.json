@@ -1,0 +1,77 @@
+{
+  "sample_rate": 44100,
+  "decoded_duration_seconds": 0.4397278911564626,
+  "acf_candidate_hz": 37.30845554333535,
+  "acf_peak_normalized": 0.32735586602452876,
+  "local_comb_pitch_hz": 37.167564331701286,
+  "midi_note_float": 26.215350358005693,
+  "cents_from_midi_26_D1": 21.535035800569347,
+  "frame_fits": [
+    {
+      "center_seconds": 0.05381035954228893,
+      "weighted_harmonic_fit_fraction": 0.18447825716575172
+    },
+    {
+      "center_seconds": 0.1012510018758494,
+      "weighted_harmonic_fit_fraction": 0.34173401432811346
+    },
+    {
+      "center_seconds": 0.1486916442094099,
+      "weighted_harmonic_fit_fraction": 0.5386161466989463
+    },
+    {
+      "center_seconds": 0.19613228654297035,
+      "weighted_harmonic_fit_fraction": 0.5188812912364373
+    },
+    {
+      "center_seconds": 0.24357292887653084,
+      "weighted_harmonic_fit_fraction": 0.6376846732354557
+    },
+    {
+      "center_seconds": 0.2910135712100913,
+      "weighted_harmonic_fit_fraction": 0.5948753058455829
+    },
+    {
+      "center_seconds": 0.33845421354365174,
+      "weighted_harmonic_fit_fraction": 0.4648945434872077
+    },
+    {
+      "center_seconds": 0.38589485587721223,
+      "weighted_harmonic_fit_fraction": 0.34223944634142667
+    }
+  ],
+  "wav_validation": {
+    "extracted": {
+      "frames": 8,
+      "samples_per_frame": 2048,
+      "chunks": [
+        "fmt ",
+        "clm ",
+        "data"
+      ],
+      "peak": 0.8999908444471572
+    },
+    "modeled": {
+      "frames": 8,
+      "samples_per_frame": 2048,
+      "chunks": [
+        "fmt ",
+        "clm ",
+        "data"
+      ],
+      "peak": 0.8999908444471572
+    }
+  },
+  "preview_rms": [
+    0.22309171432963162,
+    0.22309171432963165,
+    0.22309171432963165
+  ],
+  "limitations": [
+    "Pitch is a working estimate for a modulated, noisy AAC sample.",
+    "Fit fraction is weighted local variance explained by 64 harmonics, not an intrinsic periodic-energy percentage.",
+    "Extracted frames use boundary detrending, 256-harmonic low-pass, and circular phase alignment.",
+    "Modeled frames use fixed synthetic phase; original phase and non-harmonic residual are omitted.",
+    "Offline previews are not Serum renders; actual Serum import remains untested."
+  ]
+}
