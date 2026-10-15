@@ -26,3 +26,7 @@ Dave: run that pair through the prototype, document reconstruction and reference
 - Decide project persistence and expanded WAV formats separately; the prototype is session-only.
 
 The cross-project board is not synchronized: its configured file was unavailable and this project has no registered board ID. Do not create a replacement or mark unrelated requirements validated.
+
+## Windows test handoff — 2026-10-14
+
+The next executable step is the [Serum test handoff](SERUM_TEST_HANDOFF.md), using the checked-in original synthetic fixtures. The target host has Ableton Live 12 and Serum DLLs reporting file version 1.3.3.4; actual loading, license status and audio remain untested. Start with that installed version as a smoke test, without treating the open Serum 2 qualification choice as resolved. Dave retains mouse control; recording is cancelled. Connor ground truth and actual version-specific acceptance remain outstanding.

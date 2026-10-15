@@ -37,3 +37,7 @@ OPENBLAS_NUM_THREADS=1 MPLCONFIGDIR=/tmp/mpl python experiments/serum-bass-lab/w
 The script rewrites generated outputs beside the input WAV. It leaves the input unchanged. FFmpeg is needed only to decode a new compressed audio source; the included reference is already decoded.
 
 The reference excerpt is third-party audio supplied for this analysis. Its inclusion does not confer rights to the underlying recording. No original Serum preset or claim about the artist's exact synthesis chain is included.
+
+## Continue the native Serum test
+
+Use the [Serum test handoff](docs/SERUM_TEST_HANDOFF.md) and [original synthetic demo fixtures](fixtures/syrum-demo/README.md) to continue in Ableton on Windows. This includes the candidate wavetable and both comparison audio files; actual Serum playback remains unverified.

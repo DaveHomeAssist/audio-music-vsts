@@ -1,0 +1,22 @@
+SFT | Syrum Wavetable Generator — prototype 0.1
+Serum compatibility: UNVERIFIED
+
+Source: Original evolving bass · 55 Hz
+Source sample rate: 44100 Hz
+Trim: 0–1.5 s
+Channel: mid
+Frames: 64 × 2048
+Encoding: mono IEEE float32 WAV, 44100 Hz container
+clm metadata: <!>2048 10000000 (linear, custom; factory flag off)
+Root: 55 Hz / MIDI 33 0.0 cents
+Original scan duration: 1.5 s
+Hold first frame until 0.009090909090909092 s, scan linearly to final frame at 1.4908864151721295 s, hold until 1.5 s. One-frame tables hold throughout.
+Explore duration: 3 s; pitch: 55 Hz
+Phase alignment: relative circular alignment
+Algorithm: fixed-root one-cycle extraction, boundary detrend, DC removal, up to 128 harmonics, one global peak gain. Preview uses pitch-dependent harmonic banks and linear interpolation.
+
+A/B: A is selected mono source at original pitch; B uses fixed root at original duration. B mode selected: raw. Shared -12 dB monitoring, no loudness matching. B has 5 ms endpoint fades. Envelope-assisted mode uses smoothed source RMS, gain capped at 4x. No source envelope is embedded in the table. Explore uses raw table.
+
+Serum test: use a wavetable oscillator, check frame count, one voice, warp/effects/random phase off. Set root and scan as above; recreate envelope separately. Record version, OS, phase settings and render. Test holds, bidirectional scrubbing and save/reopen of a preset. Need Connor's matching original table and lossless audio with settings before compatibility or fidelity acceptance.
+
+Limitations: fixed pitch does not follow source drift. Stereo width, noise, transients, inharmonic components and overlapping notes are not faithfully preserved. Alignment and boundary repair alter phase. No original preset recovery. Offline success is not Serum verification.
