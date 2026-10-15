@@ -3,3 +3,9 @@ __pycache__/
 *.py[cod]
 .DS_Store
 experiments/erosyn-formant-lab/generated/
+node_modules/
+apps/serum-wave-gen-vxx/dist/
+apps/serum-wave-gen-vxx/test-results/
+apps/serum-wave-gen-vxx/playwright-report/
+.agent-claim
+work/

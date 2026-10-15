@@ -1,0 +1,26 @@
+{
+  "name": "serum-wave-gen-vxx",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite apps/serum-wave-gen-vxx --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build apps/serum-wave-gen-vxx --base ./",
+    "preview": "vite preview apps/serum-wave-gen-vxx --host 127.0.0.1",
+    "test": "tsx --test apps/serum-wave-gen-vxx/tests/dsp.test.ts",
+    "test:browser": "playwright test --config apps/serum-wave-gen-vxx/playwright.config.ts",
+    "format:check": "prettier --check \"apps/serum-wave-gen-vxx/**/*.{ts,css,html}\" package.json tsconfig.json"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "^24.0.0",
+    "axe-core": "4.14.0",
+    "prettier": "3.9.10",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.1.0"
+  },
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

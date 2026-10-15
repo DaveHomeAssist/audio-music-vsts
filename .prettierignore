@@ -1,0 +1,4 @@
+node_modules/
+apps/serum-wave-gen-vxx/dist/
+apps/serum-wave-gen-vxx/test-results/
+work/
