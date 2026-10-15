@@ -19,6 +19,19 @@ Build and tests ran on Dominic in an isolated temporary checkout using `mcr.micr
 
 The browser audio check samples the actual AudioWorklet signal through an analyser and confirms Stop makes it fall below the threshold. It is a short signal check. The 30-second hold is a separate numerical synthesis check, not a 30-second hardware listening test.
 
+## Duncan rerun — October 15, 2026
+
+The current `main` checkout at `dea6eea` was verified directly on Duncan using a temporary Node 24.22.0 and npm 11.21.0 toolchain. Duncan's installed Node 20.20.2 is below the repository requirement of Node 22.12 or newer. Locked dependencies were installed with `npm ci`. Playwright 1.63.0 required Chromium revision 1243, which was not in Duncan's existing browser cache; the matching Chromium and headless-shell builds were installed before the successful rerun.
+
+| Check | Result | Notes |
+| --- | --- | --- |
+| `npm test` | 7 passed | All numerical, DSP, WAV and fixture checks passed in 3.1 seconds. The lab estimate remained 37.211 Hz. |
+| `npm run build` | Passed | TypeScript checking and the production Vite build completed successfully. |
+| `npm run test:browser` | 9 passed | All browser journeys, five viewport cases, AudioWorklet signal/stop behavior and automated accessibility coverage passed in 27.7 seconds. |
+| `npm run format:check` | Failed | Prettier reported existing style differences in 12 tracked files. No files were reformatted during this verification run. |
+
+The browser suite's first attempt failed before application execution because Playwright could not find Chromium revision 1243. After installing that exact revision, two complete reruns passed 9 of 9 tests. The repository working tree remained clean after verification.
+
 The lab reference estimate was **37.211 Hz**. Its average lag-difference repetition score was **0.424**, not a fidelity percentage. The regression generation uses the existing lab's working root of **37.17 Hz**. These values do not identify an original preset or validate reconstruction against Connor's original wavetable.
 
 Early checks found layout overlap at desktop/phone/extreme zoom and a light-theme contrast issue. Those were corrected before the complete passing run. A test-navigation mistake was also fixed. No failing test is waived.
@@ -31,5 +44,6 @@ Early checks found layout overlap at desktop/phone/extreme zoom and a light-them
 - Very large files and browser memory behavior beyond the bounded fixtures. Input limit is 64 MiB; preview/scan control range is 0.02–120 seconds. No fixed one-second cutoff exists.
 - No public deployment or hosted service was configured. There was no existing deployment workflow to complete. Repository delivery and the localhost preview are separate from public release.
 - The configured cross-project board file was unavailable and no Syrum entry was registered. Project next steps are recorded locally; board synchronization is not claimed.
+- The current checkout does not pass `npm run format:check`; Prettier reports 12 tracked files. This is a repository formatting gate, not a unit, build or browser test failure.
 
 The custom-table metadata follows [Xfer's published flag explanation](https://xferrecords.com/forums/general/file-types), using linear interpolation and factory flag off. That source explains the intended profile; only actual version-specific Serum tests can close compatibility.

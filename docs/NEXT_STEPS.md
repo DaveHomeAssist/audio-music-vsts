@@ -4,7 +4,7 @@ This is the prototype's implementation follow-through, linked to the existing re
 
 ## Current slice
 
-Local TypeScript/Web Audio converter under `apps/serum-wave-gen-vxx`. Product name Syrum; Serum is the compatibility target. Direct-cycle baseline, six working stages, original synthetic demo, WAV export plus playback notes. Build, seven numerical/file checks and nine browser tests passed on the isolated runner. Execution evidence lives in [SYRUM_VERIFICATION.md](SYRUM_VERIFICATION.md).
+Local TypeScript/Web Audio converter under `apps/serum-wave-gen-vxx`. Product name Syrum; Serum is the compatibility target. Direct-cycle baseline, six working stages, original synthetic demo, WAV export plus playback notes. Build, seven numerical/file checks and nine browser tests passed on Dominic and again on Duncan. Duncan's October 15, 2026 rerun used Node 24.22.0 and Playwright Chromium revision 1243. The current formatting gate reports 12 tracked files that need Prettier formatting. Execution evidence lives in [SYRUM_VERIFICATION.md](SYRUM_VERIFICATION.md).
 
 ## Next evidence gate
 
@@ -20,6 +20,7 @@ Dave: run that pair through the prototype, document reconstruction and reference
 
 ## Remaining engineering work
 
+- Restore `npm run format:check` by applying and reviewing Prettier output across the 12 reported files, then rerun all checks.
 - Headphone/monitor listening acceptance and native Safari/device checks.
 - Calibration against matching tables/audio; better local pitch tracking and low-confidence handling based on those results.
 - Profile large inputs, audio dropouts and mobile resource use; improve per-stage progress if warranted.
