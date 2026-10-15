@@ -13,7 +13,7 @@ Original scan duration: 1.5 s
 Hold first frame until 0.009090909090909092 s, scan linearly to final frame at 1.4908864151721295 s, hold until 1.5 s. One-frame tables hold throughout.
 Explore duration: 3 s; pitch: 55 Hz
 Phase alignment: relative circular alignment
-Algorithm: fixed-root one-cycle extraction, boundary detrend, DC removal, up to 128 harmonics, one global peak gain. Preview uses pitch-dependent harmonic banks and linear interpolation.
+Algorithm: fixed-root one-cycle extraction, crossfaded loop point, DC removal, harmonics up to source Nyquist (max 1023), one global peak gain. Preview uses pitch-dependent harmonic banks and linear interpolation.
 
 A/B: A is selected mono source at original pitch; B uses fixed root at original duration. B mode selected: raw. Shared -12 dB monitoring, no loudness matching. B has 5 ms endpoint fades. Envelope-assisted mode uses smoothed source RMS, gain capped at 4x. No source envelope is embedded in the table. Explore uses raw table.
 
