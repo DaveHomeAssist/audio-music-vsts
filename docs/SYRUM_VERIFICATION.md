@@ -36,6 +36,23 @@ The lab reference estimate was **37.211 Hz**. Its average lag-difference repetit
 
 Early checks found layout overlap at desktop/phone/extreme zoom and a light-theme contrast issue. Those were corrected before the complete passing run. A test-navigation mistake was also fixed. No failing test is waived.
 
+## Duncan native Serum attempt — October 15, 2026
+
+Ableton Live 12 Suite executable version 12.1.1 launched successfully on Duncan into a fresh untitled set. The installed instrument file `C:\Program Files\Common Files\VST3\Serum_x64.dll` reports file version 1.334; the 32-bit VST2 instrument also reports 1.334. These file properties do not establish the in-app Serum version, license state or successful plugin loading.
+
+The permitted Windows controller found exactly one Ableton window and activated it, but window capture timed out with `FrameArrived timed out`. An accessibility-only read returned no usable controls. After the controller's prescribed reset and one retry, capture failed with the same error. No blind input was sent.
+
+| Native case | Result | Evidence |
+| --- | --- | --- |
+| Serum instrument load and license | Not run | Ableton launched, but the plugin browser and Serum window could not be inspected. |
+| Candidate import and 64-frame inspection | Not run | No wavetable was loaded. |
+| 1.5-second scan and lossless render | Not run | No MIDI, automation, playback or render was created. |
+| 30-second frame holds and bidirectional scrubs | Not run | No playback was started. |
+| 3-second scan at 55 Hz and 110 Hz | Not run | No pitch or scan automation was created. |
+| Preset and Ableton set save/reopen | Not run | No preset or set was saved. |
+
+No plugin search paths, Ableton preferences, projects, presets or fixture files were changed. Ableton was left open at the fresh untitled set for local continuation. Serum compatibility remains unverified.
+
 ## Unverified and deliberately open
 
 - Actual Serum import, frame interpretation, interpolation behavior, export portability and preset save/reopen.
