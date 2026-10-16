@@ -53,9 +53,26 @@ The permitted Windows controller found exactly one Ableton window and activated 
 
 No plugin search paths, Ableton preferences, projects, presets or fixture files were changed. Ableton was left open at the fresh untitled set for local continuation. Serum compatibility remains unverified.
 
+## Duncan manual Serum check — October 15, 2026
+
+The native cases were then continued by hand on Duncan and recorded in three screenshots (about 03:48–04:03 local time) plus written notes. Serum ran as `Serum_x64` on Ableton track `1-Serum_x64`, starting from the `- Init -` preset. The table was `fixtures/syrum-demo/Syrum_64x2048.wav` from `main`, generated before the loop-point and harmonic-ceiling fix. That is fine for a format test. The in-app About screen was not captured, so the 1.334 file version is still the only version evidence.
+
+| Native case | Result | Evidence |
+| --- | --- | --- |
+| Serum instrument load | Passed | The Serum window opened in Ableton with the `- Init -` preset. License state was not checked. |
+| Candidate import as a wavetable | Passed | Loaded into Osc A by hand. The wavetable selector shows `Syrum_64x2048`. |
+| Frame 1 and frame order | Passed (visual) | At WT POS 0, the 2D display matches a plot of frame 1 made from the file. The 3D view runs from the uneven first frame to smoother later frames, the same order as the file. |
+| 64-frame inspection | Open: Serum reports 256 | The frame box reads `1` at WT POS 0 (screenshot) and `256` with WT POS fully clockwise (reported by hand, no screenshot). Serum's Copy Osc A → B menu action also produced a 256-frame table named `Custom` in Osc B. |
+| 1.5-second scan and lossless render | Blocked | Ableton reports that saving and exporting are deactivated in this non-commercial session. No render was made. FL Studio 2025 on Duncan is the planned render host. |
+| 30-second frame holds and bidirectional scrubs | Not run | Needs a render host. |
+| 3-second scan at 55 Hz and 110 Hz | Not run | Needs a render host. |
+| Preset and Ableton set save/reopen | Not run | Ableton set saving is deactivated. Serum's own preset save was not tried. |
+
+The 256 reading is probably not a misread of the file. Cutting 64 × 2048 samples into 512-sample frames would give 256 frames, but frame 1 would then show only a quarter of the stored cycle, and the display shows the whole cycle. The likely cause is the `clm ` metadata: Syrum writes `<!>2048 10000000`, where the first digit, `1`, selects linear crossfade interpolation. Serum may fill the 64 stored frames out to 256 by crossfading between them. This is a hypothesis. To test it, load two 8-frame probe tables from the separate Duncan test package and read the frame box at full WT POS. A probe with flag `1` should read 256, and a probe with flag `0` should read 8.
+
 ## Unverified and deliberately open
 
-- Actual Serum import, frame interpretation, interpolation behavior, export portability and preset save/reopen.
+- Serum's 256-frame reading of the 64-frame table and the interpolation flag behind it, rendered Serum output, export portability and preset save/reopen. Wavetable import and frame order are checked visually only; see the manual check above.
 - Connor's matching original table/lossless audio pair and playback settings; existing experimental tables and AAC-derived clips are not substitutes.
 - Perceived fidelity, transient/noise preservation, full pitch tracking, headphone/monitor listening, native Safari, mobile devices and long-term audio performance.
 - Very large files and browser memory behavior beyond the bounded fixtures. Input limit is 64 MiB; preview/scan control range is 0.02–120 seconds. No fixed one-second cutoff exists.
