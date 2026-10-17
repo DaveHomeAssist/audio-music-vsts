@@ -1,0 +1,8 @@
+# Check out text files with LF on every OS. Prettier's default endOfLine is "lf", so a
+# CRLF checkout (Windows with core.autocrlf=true) fails `npm run format:check` on every file.
+* text=auto eol=lf
+
+# Binary assets: never convert or diff as text.
+*.wav binary
+*.png binary
+*.zip binary

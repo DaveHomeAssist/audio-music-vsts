@@ -32,6 +32,8 @@ The current `main` checkout at `dea6eea` was verified directly on Duncan using a
 
 The browser suite's first attempt failed before application execution because Playwright could not find Chromium revision 1243. After installing that exact revision, two complete reruns passed 9 of 9 tests. The repository working tree remained clean after verification.
 
+Cause of the `format:check` failure, found afterwards: the 12 files are every file the check covers, and the Windows checkout converted them to CRLF. The same files pass with LF and fail with CRLF on Linux too. The repository had no `.gitattributes`; one now enforces LF checkouts. The stored files did not need reformatting.
+
 The lab reference estimate was **37.211 Hz**. Its average lag-difference repetition score was **0.424**, not a fidelity percentage. The regression generation uses the existing lab's working root of **37.17 Hz**. These values do not identify an original preset or validate reconstruction against Connor's original wavetable.
 
 Early checks found layout overlap at desktop/phone/extreme zoom and a light-theme contrast issue. Those were corrected before the complete passing run. A test-navigation mistake was also fixed. No failing test is waived.
@@ -78,6 +80,6 @@ The 256 reading is probably not a misread of the file. Cutting 64 × 2048 sample
 - Very large files and browser memory behavior beyond the bounded fixtures. Input limit is 64 MiB; preview/scan control range is 0.02–120 seconds. No fixed one-second cutoff exists.
 - No public deployment or hosted service was configured. There was no existing deployment workflow to complete. Repository delivery and the localhost preview are separate from public release.
 - The configured cross-project board file was unavailable and no Syrum entry was registered. Project next steps are recorded locally; board synchronization is not claimed.
-- The current checkout does not pass `npm run format:check`; Prettier reports 12 tracked files. This is a repository formatting gate, not a unit, build or browser test failure.
+- Duncan's `npm run format:check` result after the `.gitattributes` change. The earlier failure was CRLF line endings in the Windows checkout, not a formatting defect.
 
 The custom-table metadata follows [Xfer's published flag explanation](https://xferrecords.com/forums/general/file-types), using linear interpolation and factory flag off. That source explains the intended profile; only actual version-specific Serum tests can close compatibility.
