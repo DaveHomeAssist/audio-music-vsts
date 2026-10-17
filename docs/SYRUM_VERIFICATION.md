@@ -78,6 +78,6 @@ The 256 reading is probably not a misread of the file. Cutting 64 × 2048 sample
 - Very large files and browser memory behavior beyond the bounded fixtures. Input limit is 64 MiB; preview/scan control range is 0.02–120 seconds. No fixed one-second cutoff exists.
 - No public deployment or hosted service was configured. There was no existing deployment workflow to complete. Repository delivery and the localhost preview are separate from public release.
 - The configured cross-project board file was unavailable and no Syrum entry was registered. Project next steps are recorded locally; board synchronization is not claimed.
-- The current checkout does not pass `npm run format:check`; Prettier reports 12 tracked files. This is a repository formatting gate, not a unit, build or browser test failure.
+- Duncan’s October 15 checkout reported 12 formatting differences. A clean cloud checkout of `a823445` was rechecked on October 17: `npm run format:check` passed without edits, all seven DSP tests passed via `node --import tsx --test apps/serum-wave-gen-vxx/tests/dsp.test.ts`, and `npm run build` passed. The npm test wrapper could not create its Unix IPC socket in this environment; the direct Node invocation ran the same test file. No new native Serum or browser acceptance is claimed.
 
 The custom-table metadata follows [Xfer's published flag explanation](https://xferrecords.com/forums/general/file-types), using linear interpolation and factory flag off. That source explains the intended profile; only actual version-specific Serum tests can close compatibility.
