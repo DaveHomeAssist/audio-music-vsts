@@ -11,6 +11,7 @@ import {
   oscillator,
   render,
   rms,
+  sample,
 } from "../src/dsp.ts";
 import { mono, readWav, writeWav } from "../src/wav.ts";
 const buffer = (b: Buffer): ArrayBuffer =>
@@ -127,6 +128,75 @@ test("30-second hold, scrubbing endpoints and pitch/scan independence", () => {
       1e-6,
     );
   }
+});
+// Mean power of harmonic k across frames, relative to harmonics 1-40, in dB.
+function harmonicDb(frames: Float32Array, count: number, k: number): number {
+  let target = 0,
+    total = 0;
+  for (let f = 0; f < count; f++) {
+    const re = Float64Array.from(frames.subarray(f * FRAME, (f + 1) * FRAME)),
+      im = new Float64Array(FRAME);
+    fft(re, im);
+    for (let h = 1; h <= 40; h++) {
+      const p = re[h]! ** 2 + im[h]! ** 2;
+      total += p;
+      if (h === k) target += p;
+    }
+  }
+  return 10 * Math.log10(target / total);
+}
+test("boundary repair keeps harmonic 1 near the unrepaired value on noisy, drifting cycles", () => {
+  const sr = 44100,
+    root = 41;
+  let seed = 7,
+    phase = 0;
+  const noise = () => {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    return seed / 2 ** 31 - 1;
+  };
+  // Weak fundamental, saw-like upper harmonics, pitch gliding 40 -> 42 Hz, plus broadband noise.
+  const drifting = Float32Array.from(
+    { length: Math.round(sr * 1.5) },
+    (_, i) => {
+      phase += (2 * Math.PI * (40 + (2 * i) / (sr * 1.5))) / sr;
+      let x = 0.05 * Math.sin(phase);
+      for (let h = 2; h <= 30; h++) x += Math.sin(h * phase) / h;
+      return 0.4 * x + 0.25 * noise();
+    },
+  );
+  const t = generate(drifting, sr, root, 64, false),
+    period = sr / root,
+    raw = new Float32Array(64 * FRAME);
+  for (let f = 0; f < 64; f++) {
+    const start = (t.first + ((t.last - t.first) * f) / 63) * sr - period / 2;
+    for (let j = 0; j < FRAME; j++)
+      raw[f * FRAME + j] = sample(drifting, start + (j / FRAME) * period);
+  }
+  close(harmonicDb(t.samples, 64, 1), harmonicDb(raw, 64, 1), 3);
+});
+test("low roots keep harmonics up to source Nyquist, in the table and the preview bank", () => {
+  const sr = 44100,
+    tone = (root: number, h: number) =>
+      Float32Array.from(
+        { length: sr },
+        (_, i) =>
+          0.5 * Math.sin((2 * Math.PI * root * i) / sr) +
+          0.25 * Math.sin((2 * Math.PI * root * h * i) / sr),
+      );
+  const level = (frame: Float32Array, k: number) => {
+    const re = Float64Array.from(frame),
+      im = new Float64Array(FRAME);
+    fft(re, im);
+    return Math.hypot(re[k]!, im[k]!) / Math.hypot(re[1]!, im[1]!);
+  };
+  // Harmonic 200 of 40 Hz is 8 kHz: well inside Nyquist, far above the old 128-harmonic ceiling.
+  // Linear interpolation in sample() rolls off about 0.9 dB at 8 kHz, hence 0.5 ± 0.07.
+  const low = generate(tone(40, 200), sr, 40, 4, false);
+  close(level(low.samples.subarray(0, FRAME), 200), 0.5, 0.07);
+  close(level(bankFor(low, 40, sr).subarray(0, FRAME), 200), 0.5, 0.07);
+  // At 440 Hz the source Nyquist still limits the table: harmonic 60 is 26.4 kHz.
+  const high = generate(tone(440, 60), sr, 440, 4, false);
+  assert.ok(level(high.samples.subarray(0, FRAME), 60) < 1e-6);
 });
 test("raw and assisted render are distinct and finite", () => {
   const t = generate(source, 44100, 55, 16, true),

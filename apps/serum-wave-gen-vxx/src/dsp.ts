@@ -1,5 +1,10 @@
 export const FRAME = 2048;
-export const CAPS = [128, 64, 32, 16, 8, 4, 2, 1];
+// Highest harmonic a 2048-sample frame can hold below its own Nyquist.
+export const MAX_HARMONICS = FRAME / 2 - 1;
+// Preview banks; 512 keeps low roots (below about 39 Hz at 44.1 kHz) bright.
+export const CAPS = [512, 256, 128, 64, 32, 16, 8, 4, 2, 1];
+// Fraction of the cycle crossfaded across the loop point.
+const LOOP_FADE = 0.1;
 export interface Analysis {
   hz: number;
   repetition: number;
@@ -157,6 +162,29 @@ export function bandlimit(frame: Float32Array, cap: number): Float32Array {
   fft(re, im, true);
   return Float32Array.from(re);
 }
+// Samples one cycle and closes the loop by crossfading with the neighbouring cycle. A linear
+// ramp correction would add a sawtooth (strong h1/h2) whenever the cycle ends do not meet.
+export function cycle(
+  source: Float32Array,
+  start: number,
+  period: number,
+): Float32Array {
+  const frame = new Float32Array(FRAME),
+    fade = FRAME * LOOP_FADE;
+  // Blend the head toward the next cycle when it exists, otherwise the tail toward the previous one.
+  const forward =
+    start + period * (1 + LOOP_FADE) <= source.length - 1 ||
+    start < period * LOOP_FADE;
+  for (let j = 0; j < FRAME; j++) {
+    const at = start + (j / FRAME) * period,
+      edge = forward ? j : FRAME - j;
+    const w = edge < fade ? 0.5 * (1 + Math.cos((Math.PI * edge) / fade)) : 0;
+    frame[j] =
+      (1 - w) * sample(source, at) +
+      w * sample(source, at + (forward ? period : -period));
+  }
+  return frame;
+}
 export function generate(
   source: Float32Array,
   sr: number,
@@ -197,16 +225,16 @@ export function generate(
     envelope[i] = Math.sqrt(sum / Math.max(1, n));
   }
   let previous: Float32Array | undefined;
-  const sourceCap = Math.max(1, Math.min(128, Math.floor(sr / (2 * root)) - 1));
+  const sourceCap = Math.max(
+    1,
+    Math.min(MAX_HARMONICS, Math.floor(sr / (2 * root)) - 1),
+  );
   for (let f = 0; f < count; f++) {
     const center = lerp(first, last, count === 1 ? 0.5 : f / (count - 1)) * sr;
-    let frame: Float32Array = new Float32Array(FRAME);
-    const start = center - period / 2,
-      jump = sample(source, start + period) - sample(source, start);
-    for (let j = 0; j < FRAME; j++)
-      frame[j] =
-        sample(source, start + (j / FRAME) * period) - (jump * j) / FRAME;
-    frame = bandlimit(frame, sourceCap);
+    let frame = bandlimit(
+      cycle(source, center - period / 2, period),
+      sourceCap,
+    );
     if (aligned && previous) {
       // Circular correlation in the frequency domain chooses a relative cycle rotation.
       const ar = Float64Array.from(previous),

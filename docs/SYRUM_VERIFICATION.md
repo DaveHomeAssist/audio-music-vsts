@@ -83,3 +83,34 @@ The 256 reading is probably not a misread of the file. Cutting 64 × 2048 sample
 - Duncan's `npm run format:check` result after the `.gitattributes` change. The earlier failure was CRLF line endings in the Windows checkout, not a formatting defect.
 
 The custom-table metadata follows [Xfer's published flag explanation](https://xferrecords.com/forums/general/file-types), using linear interpolation and factory flag off. That source explains the intended profile; only actual version-specific Serum tests can close compatibility.
+
+## Re-run after the loop-point and harmonic-ceiling fix (October 15, 2026)
+
+Two engine changes in `apps/serum-wave-gen-vxx/src/dsp.ts`:
+
+- **Loop point:** the linear ramp that forced each cycle's ends to meet was replaced by a 10% raised-cosine crossfade into the neighbouring cycle. On noisy or drifting sources, the ramp added a sawtooth (strong h1 and h2). On the lab reference, h1 was −0.4 dB relative to the strongest harmonic (the measured sustain is about −16 to −22 dB).
+- **Harmonic ceiling:** the 128-harmonic cap was replaced by the source Nyquist, at most 1023 harmonics. Preview banks now go up to 512 harmonics. At a 37 Hz root, the old cap removed everything above 4.76 kHz.
+
+Run in a Claude Code cloud container: Node 22.22.0, local Chromium 1194 through a temporary `launchOptions.executablePath` override (not the pinned Playwright 1.63.0 browser image).
+
+| Check                                                                             | Result                                        |
+| --------------------------------------------------------------------------------- | --------------------------------------------- |
+| New test: h1 on a noisy, drifting source stays within 3 dB of unrepaired cycles   | Failed before the fix (+9.1 dB), passes after |
+| New test: harmonic 200 of a 40 Hz root survives in the table and the preview bank | Failed before the fix (absent), passes after  |
+| `npm run format:check`                                                            | Passed                                        |
+| `npm run build`                                                                   | Passed                                        |
+| `npm test`                                                                        | 9 passed (7 existing, 2 new)                  |
+| `npm run test:browser`                                                            | 9 passed                                      |
+
+Fresh export of the lab reference (root 37.21 Hz, 64 frames), scanned offline at the original duration and compared with `experiments/erosyn-formant-lab/tools/wt_lab.py compare`:
+
+| Measure                  | Before   | After    | Reference                        |
+| ------------------------ | -------- | -------- | -------------------------------- |
+| h1 vs strongest harmonic | −0.4 dB  | −16.5 dB | about −16 dB (direct extraction) |
+| Highest harmonic kept    | 128      | 591      |                                  |
+| 30–60 Hz vs reference    | +13.7 dB | +1.0 dB  | 0                                |
+| 4–8 kHz vs reference     | −31.4 dB | −1.1 dB  | 0                                |
+| 8–16 kHz vs reference    | −40.1 dB | −2.6 dB  | 0                                |
+| Cycle coherence          | 18%      | 19%      | 19%                              |
+
+The remaining top-end loss comes from linear interpolation while sampling each cycle (about −0.9 dB at 8 kHz and −3.9 dB at 16 kHz). These are offline numbers. They do not verify Serum import or listening quality.

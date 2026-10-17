@@ -2,6 +2,8 @@
 
 This is the distinct toolkit supplied in `erosyn-bass-lab-kit-alt1.zip`, consolidated alongside the [eight-frame harmonic-fit experiment](../serum-bass-lab/README.md). It adds a designed 64-frame vowel progression, a 16-frame extraction, a pitch-glide analysis model, an A/B command, and an offline effects renderer.
 
+> **Metadata note (2026-10-15):** both committed tables carry `clm` flags `01000000`, copied from Xfer's factory example. That means no frame interpolation, and the factory flag on, which tells Serum the table ships with Serum and must not be embedded in user presets ([Xfer file types](https://xferrecords.com/forums/general/file-types)). `tools/wt_lab.py` now writes `10000000` (linear crossfade, custom). Regenerating with the current tool gives identical sample data with corrected flags. The committed files are left unchanged because `provenance.json` records their hashes.
+
 Start with the [64-frame original formant table](wavetables/ORIG_formant_growl_D1.wav) for sound design. Use the [16-frame extracted table](wavetables/REF_extract_D1_learning-only.wav) to compare what direct extraction retains. The designed table uses a saw-like harmonic source with chosen resonances; it is not a measurement-derived reconstruction of the original oscillator.
 
 ## How the two experiments differ

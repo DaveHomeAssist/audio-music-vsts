@@ -9,7 +9,7 @@ Subcommands
 
 Requires: numpy, scipy, soundfile, matplotlib.  Input must be WAV/AIFF/FLAC
 (convert m4a first:  ffmpeg -i hit.m4a -c:a pcm_f32le hit.wav).
-Wavetables are 2048-sample frames, 32-bit float, with Serum's 'clm ' frame-size marker.
+Wavetables are 2048-sample frames, 32-bit float, with a Serum 'clm ' chunk (linear interpolation, custom table).
 """
 import argparse, os, struct, sys
 import numpy as np
@@ -32,7 +32,9 @@ def load(path, start=None, end=None):
 def write_serum_wt(path, frames):
     """frames: (n, 2048) float. Writes float32 WAV + 'clm ' chunk so Serum detects 2048 frames."""
     data = np.asarray(frames, np.float32).reshape(-1)
-    clm = b'<!>2048 01000000 wavetable (www.xferrecords.com)'
+    # Flags per Xfer: first = interpolation (1 = linear crossfade), second = factory (must stay 0,
+    # or Serum treats the table as bundled and will not embed it in user presets).
+    clm = b'<!>2048 10000000 wt_lab'
     clm += b'\0' * (len(clm) % 2)
     fmt = struct.pack('<HHIIHH', 3, 1, 44100, 44100 * 4, 4, 32)
     body = (b'WAVE' + b'fmt ' + struct.pack('<I', len(fmt)) + fmt

@@ -10,7 +10,7 @@ Dave wants to retain control of his mouse. Do not move the Mac cursor or use rem
 
 - Browser prototype: [setup and commands](../apps/serum-wave-gen-vxx/README.md).
 - Original synthetic [source.wav](../fixtures/syrum-demo/source.wav): mono, 44.1 kHz, 1.5 seconds, 55 Hz.
-- Candidate [Syrum_64x2048.wav](../fixtures/syrum-demo/Syrum_64x2048.wav): Float32 mono, 64 frames of 2048 samples, custom linear metadata. Byte-identical to the browser demo export checked on 2026-10-14.
+- Candidate [Syrum_64x2048.wav](../fixtures/syrum-demo/Syrum_64x2048.wav): Float32 mono, 64 frames of 2048 samples, custom linear metadata. Byte-identical to the browser demo export; regenerated on 2026-10-15 after the loop-point fix (see the fixture README).
 - Offline [raw-resynthesis.wav](../fixtures/syrum-demo/raw-resynthesis.wav): same generated table at 55 Hz over 1.5 seconds, raw mode with 5 ms endpoint fades. This is not a Serum render.
 - [Playback notes](../fixtures/syrum-demo/playback-notes.txt): root, phase alignment, scan endpoints and caveats.
 

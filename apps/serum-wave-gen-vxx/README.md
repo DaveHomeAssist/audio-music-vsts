@@ -22,11 +22,11 @@ Open the printed localhost address. `npm run build` creates `apps/serum-wave-gen
 
 ## Engine and known limits
 
-The direct-cycle baseline draws on the existing eight-frame lab: fixed-root sampling, periodic boundary detrending, DC removal, harmonic limiting, and optional circular alignment between frames. This TypeScript implementation is independently tested; it is not a bit-identical port. The alternate lab's hand-designed formant model remains a separate experiment.
+The direct-cycle baseline draws on the existing eight-frame lab: fixed-root sampling, a crossfaded loop point (10% of the cycle, no linear ramp, which would add a false fundamental), DC removal, harmonic limiting, and optional circular alignment between frames. This TypeScript implementation is independently tested; it is not a bit-identical port. The alternate lab's hand-designed formant model remains a separate experiment.
 
 - PCM 16/24/32 or IEEE float32 RIFF WAV; one or two channels, 8–192 kHz. Extensible WAV, RF64, compressed inputs and multichannel sources are rejected with an explanation.
 - 64 MiB input memory limit. No one-second duration limit. Generation needs at least two cycles at the selected root. Pitch estimation is limited to 25–1000 Hz; analyze requires at least 25 ms of audio.
-- 1–256 frames, exactly 2048 samples each. At most 128 source harmonics, additionally limited by source Nyquist. One global table gain preserves relative frame amplitudes.
+- 1–256 frames, exactly 2048 samples each. Harmonics up to the source Nyquist, at most 1023 (a 37 Hz root keeps 591, about 22 kHz). Preview banks go up to 512 harmonics. Linear interpolation while sampling each cycle rolls off the top (about −0.9 dB at 8 kHz, −3.9 dB at 16 kHz at 44.1 kHz). One global table gain preserves relative frame amplitudes.
 - Pitch estimation uses averaged/downsampled lag differences in seven windows. Weak repetition and pitch spread produce warnings, not a fictional accuracy percentage. This baseline is not a pitch tracker, source separator or transient reconstruction engine.
 - Boundary repair and phase alignment alter the original phase/time relationship. Noise, transients, overlapping notes, stereo effects, rapid modulation and pitch drift are difficult cases. Holding a noisy cycle makes it periodic.
 - Preview uses harmonic banks selected below Nyquist plus linear sample/frame interpolation. This reduces aliasing; it does not reproduce Serum's oscillator or prove alias-free playback. Preview banks have shared headroom compensation and can differ in gain from the exported raw table.
