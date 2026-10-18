@@ -114,3 +114,70 @@ Fresh export of the lab reference (root 37.21 Hz, 64 frames), scanned offline at
 | Cycle coherence          | 18%      | 19%      | 19%                              |
 
 The remaining top-end loss comes from linear interpolation while sampling each cycle (about −0.9 dB at 8 kHz and −3.9 dB at 16 kHz). These are offline numbers. They do not verify Serum import or listening quality.
+
+## Connor's Mac — October 16–18, 2026
+
+A fresh clone on Connor's Mac (macOS 26.6, Apple silicon) with a temporary toolchain: Node 24.22.0 and npm 11.19.1 from the official nodejs.org tarball (SHA-256 checked), Playwright Chromium revision 1243. The Mac had no Node and no Homebrew beforehand. Its `/usr/bin/git` shim fails until the Xcode license is accepted, so git ran from the Command Line Tools (`DEVELOPER_DIR=/Library/Developer/CommandLineTools`). No source change was needed to build or run.
+
+| Check | `a823445` (Oct 16, before #1/#2) | `7acc719` (Oct 18, after #1/#2) |
+| --- | --- | --- |
+| `npm run format:check` | Passed | Passed |
+| `npm test` | 7 passed | 9 passed (7 existing, 2 from #1) |
+| `npm run build` | Passed | Passed |
+| `npm run test:browser` | 9 passed | 9 passed |
+| Demo export vs. `fixtures/syrum-demo` | Table and raw resynthesis byte-identical to the fixtures of that commit | Not repeated |
+
+The lab reference estimate stayed at 37.211 Hz with repeatability 0.424 on both commits.
+
+### Browser walkthrough (`a823445`, demo source)
+
+Run in a Chromium pane at 1024×768 against `npm run dev`. Status text and control state were checked, not sound.
+
+- Analyze: 55.00 Hz, MIDI 33, 0 cents, −14.2 dBFS RMS. Generate: 64 frames, aligned.
+- Compare: A, raw B and envelope-assisted B each played to "Audition complete"; Stop stopped playback.
+- Explore: Hold engaged; scrubbing to 50% and 10% updated the readout while holding. A 1.5 s scan at 55 Hz reached 100% and held the final frame. A 3 s scan at 110 Hz read 49.7% after about 1.5 s and 100% at 3 s. "Use source duration" restored 1.5 s; tempo sync at 140 BPM × 2 beats set 0.857 s.
+- Export: the downloaded `Syrum_64x2048.wav` was byte-identical to the fixture. Every export uses this name regardless of source, so a second export collides in the Downloads folder.
+
+### Third-party bass one-shots (`a823445`)
+
+Splice one-shots from Connor's library, 24-bit stereo 44.1 kHz, analyzed as the mono sum with the app's own `analyze()`. No audio from these is committed.
+
+| One-shot | Length | Estimate | Repetition / spread | Extra warnings |
+| --- | --- | --- | --- | --- |
+| `DS_TD_bass_synth_gnarl_D` | 0.843 s | 36.73 Hz, D1 +1 ¢ | 0.753 / 1.9 ¢ | none |
+| `TSP_NOISIA_bass_jumpup_schreeuwbasje_E` | 1.009 s | 43.95 Hz, F1 +12 ¢ | 0.844 / 117 ¢ | pitch varies |
+| `MO_RO_bass_bulldog_C` | 1.395 s | 33.23 Hz, C1 +28 ¢ | 0.799 / 2721 ¢ | pitch varies |
+| `EFFIN_150_bass_neuro_tech` | 0.800 s | 59.74 Hz, A#1 +43 ¢ | 0.720 / 308 ¢ | pitch varies |
+| `bass_tonal_stazz_B` | 0.857 s | 51.66 Hz, G#1 −9 ¢ | 0.649 / 788 ¢ | weak repetition, pitch varies |
+| `PSYMBIONIC_bass_one_shot_reese_17_85_E` | 1.059 s | 115.40 Hz (wrong octave and note) | 0.424 / 720 ¢ | weak repetition, pitch varies |
+
+The stable one-shot matched its labelled note. The drifting and detuned ones raised warnings rather than a confident wrong answer, except that the reese's estimate is far off. The D1 file went through the full browser flow; its downloaded table was byte-identical to a headless export of the same settings. Connor then used the macOS launcher (below) on a bass extracted from a song and reported that it worked well. That report is informal: no file, trim, root or settings were recorded.
+
+### `clm ` flags in tables on this Mac
+
+`python3 tools/clm_probe_tables.py inspect` over the installed table folders. "Serum layout" means the file starts with Serum's 28-byte `JUNK` chunk and has no `fact` chunk; the other files were written by other tools. The first digit is the one Xfer describes as the interpolation setting; the second is the factory flag.
+
+| Folder | Serum layout | Other layout |
+| --- | --- | --- |
+| Serum 2 factory `Analog`, `Digital`, `Vowel`, `S2 Tables` | `01`, `11`, `21`, `31`, `41` (one `Digital` file has no `clm `) | `01`, `11`, `21` |
+| Serum 2 factory `Spectral` | `21` | `01`, `11`, `21`, `31`, `41` |
+| Serum 1 user tables (Connor's saves and third-party packs) | `00` ×1, `10` ×2, `20` ×11, `40` ×4 | `00` ×6, `10` ×11, `20` ×6, `40` ×2 |
+| Serum 2 user tables | `20` ×2 | — |
+| Syrum export | — | `10` |
+
+So the first digit takes values 0–4 in Xfer's own factory tables and in tables Serum saved for Connor. Digit 1, which Syrum writes, is common in factory tables (for example `Analog/Basic_McB.wav`, 4 frames, `11`). If Serum also reports more frames than stored for a factory digit-1 table, the 256 reading on Duncan is how Serum presents that interpolation setting rather than a Syrum file defect. Matching pairs for the check: `Analog/Basic Mini.wav` (4 frames, digit 0) and `Analog/Basic_McB.wav` (4 frames, digit 1), and Connor's own Serum-saved `JaggedSin.wav` (4 frames, digit 1). `tools/clm_probe_tables.py probes` writes 8-frame probes with digits 0, 1 and 2 from the current fixture into `work/clm-probes`.
+
+### Native Serum cases
+
+Installed bundle versions: Serum 1.368 (AU, VST3, VST2) and Serum 2.1.4 (AU, VST3); Ableton Live 12 Suite 12.4.6. These are file versions; in-app versions and license state were not checked.
+
+| Native case | Result |
+| --- | --- |
+| Frame count for factory digit-0/digit-1 tables and the probes | Not run |
+| Candidate import and 64-frame inspection | Not run |
+| 1.5-second scan and lossless render | Not run |
+| 30-second holds and bidirectional scrubs | Not run |
+| 3-second scan at 55 Hz and 110 Hz | Not run |
+| Preset save/reopen | Not run |
+
+Connor's own Serum-saved tables exist on this Mac, but no lossless render of any of them with recorded note, scan, envelope and Serum version was found, so the reconstruction comparison still uses the synthetic demo. Serum compatibility remains **unverified**.

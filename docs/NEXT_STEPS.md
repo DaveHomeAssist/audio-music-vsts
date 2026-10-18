@@ -12,6 +12,10 @@ Connor: provide a matching original table and lossless render with MIDI note, sc
 
 Dave: run that pair through the prototype, document reconstruction and reference differences, then verify import/frame count, original-duration render, 30-second hold, both scrub directions, pitch versus scan independence, and preset save/reopen in Serum. Preserve compatibility as **unverified** until actual version-specific evidence exists.
 
+## Connor's Mac — 2026-10-18
+
+Connor's Mac now runs the prototype from a double-click launcher (`tools/macos/`) and has Serum 1.368, Serum 2.1.4 and Live 12.4.6 with full export, so it can run the native cases that Duncan's non-commercial Ableton could not. Cheapest next check for the 256-frame question: read Serum's frame count for the factory pair `Analog/Basic Mini.wav` (digit 0) and `Analog/Basic_McB.wav` (digit 1), both 4 frames, then the Syrum candidate. Results and the `clm ` survey are in [SYRUM_VERIFICATION.md](SYRUM_VERIFICATION.md#connors-mac--october-1618-2026). Connor's matching original table and lossless render are still outstanding.
+
 ## Open choices (not approvals)
 
 - D01 — Qualification target: **A recommended:** one exact Serum 2 version first. B: Serum 1 and 2 together, increasing test scope. Owner: Dave + Connor.
