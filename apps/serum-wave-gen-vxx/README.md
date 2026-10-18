@@ -9,7 +9,7 @@ npm ci
 npm run dev
 ```
 
-Open the printed localhost address. `npm run build` creates `apps/serum-wave-gen-vxx/dist`; `npm run preview` serves that build. AudioWorklet playback needs localhost or HTTPS. No source audio is uploaded. Refreshing closes the session; only your theme preference persists.
+Open the printed localhost address. On macOS, [tools/macos](../../tools/macos/README.md) makes a double-click `Syrum.app` that starts the built app in the background. `npm run build` creates `apps/serum-wave-gen-vxx/dist`; `npm run preview` serves that build. AudioWorklet playback needs localhost or HTTPS. No source audio is uploaded. Refreshing closes the session; only your theme preference persists.
 
 ## Try it
 
