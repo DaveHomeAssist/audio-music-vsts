@@ -8,12 +8,17 @@
     "preview": "vite preview apps/serum-wave-gen-vxx --host 127.0.0.1",
     "test": "tsx --test apps/serum-wave-gen-vxx/tests/dsp.test.ts",
     "test:browser": "playwright test --config apps/serum-wave-gen-vxx/playwright.config.ts",
-    "format:check": "prettier --check \"apps/serum-wave-gen-vxx/**/*.{ts,css,html}\" package.json tsconfig.json"
+    "format:check": "prettier --check \"apps/serum-wave-gen-vxx/**/*.{ts,css,html}\" package.json tsconfig.json",
+    "desktop": "npm run build && electron .",
+    "desktop:dist": "npm run build && electron-builder --mac --publish never",
+    "test:desktop": "playwright test --config apps/syrum-desktop/playwright.config.ts"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
     "@types/node": "^24.0.0",
     "axe-core": "4.14.0",
+    "electron": "44.9.0",
+    "electron-builder": "26.15.3",
     "prettier": "3.9.10",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0",
@@ -22,5 +27,33 @@
   "version": "0.1.0",
   "engines": {
     "node": ">=22.12.0"
+  },
+  "productName": "Syrum",
+  "description": "SFT | Syrum Wavetable Generator prototype",
+  "main": "apps/syrum-desktop/main.cjs",
+  "build": {
+    "appId": "tools.sft.syrum",
+    "productName": "Syrum",
+    "directories": {
+      "output": "work/desktop"
+    },
+    "files": [
+      "package.json",
+      "apps/syrum-desktop/*.cjs",
+      "apps/serum-wave-gen-vxx/dist/**"
+    ],
+    "mac": {
+      "category": "public.app-category.music",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "identity": null
+    },
+    "electronDist": "node_modules/electron/dist"
   }
 }

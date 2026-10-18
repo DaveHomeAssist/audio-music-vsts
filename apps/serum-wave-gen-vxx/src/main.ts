@@ -517,30 +517,48 @@ action("tempo", () => {
   $<HTMLInputElement>("seconds").value = String(seconds);
   status(`Tempo timing applied: ${seconds.toFixed(3)} s. Pitch unchanged.`);
 });
-function download(data: BlobPart, type: string, name: string): void {
+declare global {
+  interface Window {
+    // Present only in the desktop app (apps/syrum-desktop); resolves false when cancelled.
+    syrumDesktop?: { save(name: string, bytes: Uint8Array): Promise<boolean> };
+  }
+}
+async function download(
+  data: BlobPart,
+  type: string,
+  name: string,
+): Promise<boolean> {
+  if (window.syrumDesktop)
+    return window.syrumDesktop.save(
+      name,
+      new Uint8Array(await new Blob([data], { type }).arrayBuffer()),
+    );
   const url = URL.createObjectURL(new Blob([data], { type }));
   const a = document.createElement("a");
   a.href = url;
   a.download = name;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
+  return true;
 }
-action("export-wav", () => {
+action("export-wav", async () => {
   if (!table) return;
-  download(
+  const saved = await download(
     writeWav(table.samples, 44100, true),
     "audio/wav",
     `Syrum_${table.count}x2048.wav`,
   );
+  if (!saved) return status("Export cancelled. Nothing was saved.");
   status(
     "WAV downloaded. Serum compatibility remains unverified. Download the playback notes too.",
   );
 });
-action("export-notes", () => {
+action("export-notes", async () => {
   if (!table) return;
   const midi = 69 + 12 * Math.log2(table.root / 440);
   const notes = `SFT | Syrum Wavetable Generator — prototype 0.1\nSerum compatibility: UNVERIFIED\n\nSource: ${sourceName}\nSource sample rate: ${wave?.sampleRate} Hz\nTrim: ${number("trim-start")}–${number("trim-end")} s\nChannel: ${$<HTMLSelectElement>("channel").value}\nFrames: ${table.count} × 2048\nEncoding: mono IEEE float32 WAV, 44100 Hz container\nclm metadata: <!>2048 10000000 (linear, custom; factory flag off)\nRoot: ${table.root} Hz / MIDI ${Math.round(midi)} ${((midi - Math.round(midi)) * 100).toFixed(1)} cents\nOriginal scan duration: ${table.duration} s\nHold first frame until ${table.first} s, scan linearly to final frame at ${table.last} s, hold until ${table.duration} s. One-frame tables hold throughout.\nExplore duration: ${number("seconds")} s; pitch: ${number("pitch")} Hz\nPhase alignment: ${table.aligned ? "relative circular alignment" : "off"}\nAlgorithm: fixed-root one-cycle extraction, crossfaded loop point, DC removal, harmonics up to source Nyquist (max 1023), one global peak gain. Preview uses pitch-dependent harmonic banks and linear interpolation.\n\nA/B: A is selected mono source at original pitch; B uses fixed root at original duration. B mode selected: ${$<HTMLSelectElement>("assist").value}. Shared -12 dB monitoring, no loudness matching. B has 5 ms endpoint fades. Envelope-assisted mode uses smoothed source RMS, gain capped at 4x. No source envelope is embedded in the table. Explore uses raw table.\n\nSerum test: use a wavetable oscillator, check frame count, one voice, warp/effects/random phase off. Set root and scan as above; recreate envelope separately. Record version, OS, phase settings and render. Test holds, bidirectional scrubbing and save/reopen of a preset. Need Connor's matching original table and lossless audio with settings before compatibility or fidelity acceptance.\n\nLimitations: fixed pitch does not follow source drift. Stereo width, noise, transients, inharmonic components and overlapping notes are not faithfully preserved. Alignment and boundary repair alter phase. No original preset recovery. Offline success is not Serum verification.\n`;
-  download(notes, "text/plain", "Syrum playback notes.txt");
+  if (!(await download(notes, "text/plain", "Syrum playback notes.txt")))
+    return status("Export cancelled. Nothing was saved.");
   status("Playback notes downloaded. Verification remains open.");
 });
 function canvas(
