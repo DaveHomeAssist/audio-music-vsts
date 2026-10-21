@@ -181,3 +181,13 @@ Installed bundle versions: Serum 1.368 (AU, VST3, VST2) and Serum 2.1.4 (AU, VST
 | Preset save/reopen | Not run |
 
 Connor's own Serum-saved tables exist on this Mac, but no lossless render of any of them with recorded note, scan, envelope and Serum version was found, so the reconstruction comparison still uses the synthetic demo. Serum compatibility remains **unverified**.
+
+## Desktop app — October 18–21, 2026
+
+Host: Dave's MacBook Air (macOS 27.0.1, arm64). Packaging a macOS app needs macOS, and no inventoried runner has it (RUN-4). Electron 44.9.0, electron-builder 26.15.3, built from a clean clone of `claude/syrum-desktop` outside iCloud Drive.
+
+- `npm run desktop:dist`: `Syrum-0.1.0-arm64.dmg`, 128 MB; `hdiutil verify` VALID. The app bundle is 289 MB. `app.asar` holds only `package.json`, the two shell scripts and the built `dist`.
+- `npm run test:desktop` with `SYRUM_APP` pointing at the packaged binary: passed in 9.4 s. The test runs the demo journey with network requests blocked, plays hold and scan, and saves the WAV and notes. The WAV is byte-identical to the checked-in browser export. No process remains after Quit.
+- Same test against the development build: passed. `npm test`: 9 passed. `npm run format:check`: clean.
+- Not run here: `npm run test:browser` (no Playwright browsers on this Mac; run it on Dominic or Duncan), a real-WAV import in the packaged app, headphone listening for dropouts, or a first launch through Gatekeeper on another Mac.
+

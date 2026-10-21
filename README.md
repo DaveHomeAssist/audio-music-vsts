@@ -6,6 +6,10 @@ Practical audio-analysis and synthesis experiments, with reproducible tools and 
 
 [Open the prototype guide](apps/serum-wave-gen-vxx/README.md) for local WAV import, cycle extraction, A/B playback, freeze/scrub/stretch and candidate wavetable export. Run `npm ci` then `npm run dev` from this repository. Actual Serum compatibility remains **unverified** until matching wavetable/audio tests and in-synth checks are completed.
 
+## Syrum desktop app (macOS)
+
+`npm run desktop` opens Syrum in its own window from a local build; `npm run desktop:dist` packages `work/desktop/Syrum-0.1.0-arm64.dmg` (128 MB disk image, 289 MB installed app, Apple silicon). The app needs no Node install, server, browser or network, and its Save dialog writes the WAV and playback notes. It is an **unsigned private build**: on first launch, right-click Syrum.app and choose Open, then confirm. Build from a checkout outside iCloud Drive; electron-builder stalls when iCloud has evicted repository files. Scope and acceptance: [SYRUM_DESKTOP_BRIEF.md](docs/SYRUM_DESKTOP_BRIEF.md).
+
 ## Erosyn formant lab
 
 [Open the consolidated formant toolkit](experiments/erosyn-formant-lab/README.md) for the designed 64-frame vowel table, 16-frame pitch-synchronous extraction, offline effects previews, and analysis/comparison CLI supplied in the alternate archive. It complements the eight-frame experiment below. The guide explains why the two pitch estimates and repetition metrics differ, corrects the “81% noise” interpretation, and links validation results and source hashes.
