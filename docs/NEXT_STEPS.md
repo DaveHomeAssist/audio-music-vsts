@@ -16,9 +16,9 @@ Dave: run that pair through the prototype, document reconstruction and reference
 
 Connor's Mac now runs the prototype from a double-click launcher (`tools/macos/`) and has Serum 1.368, Serum 2.1.4 and Live 12.4.6 with full export, so it can run the native cases that Duncan's non-commercial Ableton could not. Cheapest next check for the 256-frame question: read Serum's frame count for the factory pair `Analog/Basic Mini.wav` (digit 0) and `Analog/Basic_McB.wav` (digit 1), both 4 frames, then the Syrum candidate. Results and the `clm ` survey are in [SYRUM_VERIFICATION.md](SYRUM_VERIFICATION.md#connors-mac--october-1618-2026). Connor's matching original table and lossless render are still outstanding.
 
-## Standalone desktop app — proposed 2026-10-18
+## Standalone desktop app — built 2026-10-21
 
-Scoped in [SYRUM_DESKTOP_BRIEF.md](SYRUM_DESKTOP_BRIEF.md): wrap the existing build in a self-contained app window (no Node, server or browser). Not approved; awaiting choices S01–S04 (recommended: Electron, macOS first, unsigned private build, native Save dialog).
+Built per [SYRUM_DESKTOP_BRIEF.md](SYRUM_DESKTOP_BRIEF.md) with S01–S04 A on branch `claude/syrum-desktop`. The packaged arm64 app passes the desktop smoke test; see [SYRUM_VERIFICATION.md](SYRUM_VERIFICATION.md#desktop-app--october-1821-2026). Still open: a real-WAV import in the packaged app, headphone listening for hold and scan dropouts, a Gatekeeper first launch on Connor's Mac, and `npm run test:browser` on a runner.
 
 ## Open choices (not approvals)
 

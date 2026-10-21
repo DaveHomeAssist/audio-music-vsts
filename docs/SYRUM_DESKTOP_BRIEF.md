@@ -1,6 +1,6 @@
 # Syrum standalone desktop app brief
 
-Status: **proposed, not approved.** Nothing in this brief is built yet.
+Status: **built, pending PR review and listening acceptance (2026-10-21).** Built with the recommended choices S01–S04 A: Electron, macOS first, unsigned private build, native Save dialog. Evidence is in [SYRUM_VERIFICATION.md](SYRUM_VERIFICATION.md#desktop-app--october-1821-2026).
 
 ## Problem
 

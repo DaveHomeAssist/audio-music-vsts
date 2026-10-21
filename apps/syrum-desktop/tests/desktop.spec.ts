@@ -4,11 +4,13 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
 const ROOT = resolve(import.meta.dirname, "../../..");
+// Set SYRUM_APP to a packaged binary (…/Syrum.app/Contents/MacOS/Syrum) to test the build.
+const PACKAGED = process.env.SYRUM_APP;
 
 test("desktop window runs the demo journey offline and saves exports", async () => {
   const saveDir = mkdtempSync(join(tmpdir(), "syrum-desktop-"));
   const app = await electron.launch({
-    args: [ROOT],
+    ...(PACKAGED ? { executablePath: PACKAGED, args: [] } : { args: [ROOT] }),
     env: { ...process.env, SYRUM_SAVE_DIR: saveDir },
   });
   const page = await app.firstWindow();
